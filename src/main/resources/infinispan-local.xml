@@ -11,7 +11,7 @@
         xmlns="urn:infinispan:config:12.1">
 
     <cache-container default-cache="default" statistics="true">
-        <jmx domain="Infinispan"/>
+        <jmx domain="org.infinispan" enabled="true"/>
 
         <local-cache name="stockTickers" statistics="true">
             <locking isolation="REPEATABLE_READ" striping="false"/>
@@ -31,5 +31,6 @@
         </local-cache>
 
         <local-cache name="default" statistics="true"/>
+        <metrics gauges="true" histograms="true" />
     </cache-container>
 </infinispan>
