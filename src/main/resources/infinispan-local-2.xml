@@ -7,38 +7,40 @@
 
 <infinispan
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:xi="http://www.w3.org/2001/XInclude"
         xsi:schemaLocation="urn:infinispan:config:12.1 http://infinispan.org/schemas/infinispan-config-12.1.xsd"
         xmlns="urn:infinispan:config:12.1">
 
     <cache-container default-cache="default" statistics="true">
         <jmx domain="org.infinispan" enabled="true"/>
         <global-state/>
-        <transport stack="udp" cluster="mycluster" />
-
-        <distributed-cache name="stockTickers" mode="SYNC" statistics="true">
+        <local-cache name="stockTickers" statistics="true">
             <locking isolation="REPEATABLE_READ" striping="false"/>
-        </distributed-cache>
+        </local-cache>
 
-        <distributed-cache name="wineCache" mode="SYNC" statistics="true">
+        <local-cache name="wineCache" statistics="true">
             <locking isolation="REPEATABLE_READ" acquire-timeout="500"/>
             <expiration interval="100"/>
             <store-as-binary keys="true" values="true"/>
             <memory>
                 <object size="20000"/>
             </memory>
-        </distributed-cache>
+        </local-cache>
 
-        <replicated-cache name="another" mode="ASYNC" statistics="true">
+        <local-cache name="another" statistics="true">
             <expiration lifespan="1000" max-idle="500"/>
-        </replicated-cache>
+        </local-cache>
 
-        <replicated-cache name="default" statistics="true"/>
-
-        <metrics gauges="true" histograms="true"  />
-
+        <local-cache name="default" statistics="true"/>
+        <metrics gauges="true" histograms="true" />
         <counters xmlns="urn:infinispan:config:counters:12.1" num-owners="3" reliability="CONSISTENT">
-            <strong-counter name="counter" initial-value="1" storage="VOLATILE"/>
+            <strong-counter name="c1" initial-value="1" storage="PERSISTENT"/>
+            <strong-counter name="c2" initial-value="2" storage="VOLATILE">
+            </strong-counter>
+            <strong-counter name="c3" initial-value="3" storage="PERSISTENT">
+            </strong-counter>
+            <strong-counter name="c4" initial-value="4" storage="VOLATILE">
+            </strong-counter>
+            <weak-counter name="c5" initial-value="5" storage="PERSISTENT" concurrency-level="1"/>
         </counters>
 
     </cache-container>
