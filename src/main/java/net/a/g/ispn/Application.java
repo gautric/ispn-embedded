@@ -5,6 +5,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
 import org.infinispan.Cache;
+import org.infinispan.configuration.global.GlobalConfiguration;
+import org.infinispan.configuration.global.GlobalConfigurationBuilder;
 import org.infinispan.manager.DefaultCacheManager;
 import org.infinispan.manager.EmbeddedCacheManager;
 import org.infinispan.notifications.Listener;
@@ -28,10 +30,10 @@ public class Application {
    * <p>
    * This skeleton project ships with 4 different Infinispan configurations.  Uncomment the one most appropriate to you.
    */
-   private static final String INFINISPAN_CONFIGURATION = "infinispan-local.xml";
+//   private static final String INFINISPAN_CONFIGURATION = "infinispan-local.xml";
 //   private static final String INFINISPAN_CONFIGURATION = "infinispan-clustered-kubernetes.xml";
 //   private static final String INFINISPAN_CONFIGURATION = "infinispan-clustered-tcp.xml";
-//   private static final String INFINISPAN_CONFIGURATION = "infinispan-clustered-udp.xml";
+   private static final String INFINISPAN_CONFIGURATION = "infinispan-clustered-udp.xml";
 
    private final EmbeddedCacheManager cacheManager;
 
@@ -110,6 +112,11 @@ public class Application {
    }
 
    public static void main(String[] args) throws Exception {
+	   
+	   GlobalConfiguration globalConfig = new GlobalConfigurationBuilder()
+			   .jmx().enable()
+			   .build();
+	   
       try (EmbeddedCacheManager cacheManager = new DefaultCacheManager(INFINISPAN_CONFIGURATION)) {
          System.out.println("\n\n\n   ********************************  \n\n\n");
          System.out.println("Hello.  This is a sample application making use of Infinispan.");
@@ -121,6 +128,9 @@ public class Application {
          System.out.println("Sample complete.");
          System.out.println("\n\n\n   ********************************  \n\n\n");
       }
+      
+      
+      
       Thread.sleep(2*60*1000);
    }
 
